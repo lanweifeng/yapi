@@ -830,7 +830,7 @@ class InterfaceEditForm extends Component {
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="该接口后端负责人">
               {getFieldDecorator('beHead', {
-                initialValue: this.state.title,
+                initialValue: this.state.beHead,
                 rules: nameLengthLimit('接口')
               })(<Input id="beHead" placeholder="该接口后端负责人" />)}
             </FormItem>
