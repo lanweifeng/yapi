@@ -9,6 +9,7 @@ class interfaceModel extends baseModel {
   getSchema() {
     return {
       title: { type: String, required: true },
+      beHead: String,
       uid: { type: Number, required: true },
       path: { type: String, required: true },
       method: { type: String, required: true },

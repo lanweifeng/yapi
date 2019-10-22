@@ -81,6 +81,7 @@ class interfaceController extends baseController {
     const addAndUpCommonField = {
       desc: 'string',
       status: 'string',
+      beHead: 'string',
       req_query: [
         {
           name: 'string',
@@ -627,7 +628,6 @@ class interfaceController extends baseController {
 
   async up(ctx) {
     let params = ctx.params;
-
     if (!_.isUndefined(params.method)) {
       params.method = params.method || 'GET';
       params.method = params.method.toUpperCase();
@@ -708,6 +708,7 @@ class interfaceController extends baseController {
         data.req_params = [];
       }
     }
+
     let result = await this.Model.up(id, data);
     let username = this.getUsername();
     let CurrentInterfaceData = await this.Model.get(id);
