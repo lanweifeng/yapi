@@ -51,7 +51,7 @@ const HomeGuest = () => (
               <div className="btn-group">
                 <Link to="/login">
                   <Button type="primary" className="btn-home btn-login">
-                    登录 / 注册
+                    登录 ||  注册
                   </Button>
                 </Link>
                 {ThirdLogin != null ? <ThirdLogin /> : null}
@@ -367,7 +367,7 @@ class Home extends Component {
               <div className="btn-group">
                 <Link to="/login">
                   <Button type="primary" className="btn-home btn-login">
-                    登录 / 注册
+                    登录 || 注册
                   </Button>
                 </Link>
                 <Button className="btn-home btn-home-normal">
