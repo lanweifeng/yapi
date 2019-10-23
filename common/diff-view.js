@@ -68,8 +68,10 @@ module.exports = function(jsondiffpatch, formattersHtml, curDiffData) {
     return diffJson(arr1, arr2);
   };
 
+  // 初始化不同
   let diffView = [];
 
+  // 有对比数据 && 对比数据是object && 有最新数据
   if (curDiffData && typeof curDiffData === 'object' && curDiffData.current) {
     const { current, old, type } = curDiffData;
     // wiki 信息的diff 输出
@@ -82,12 +84,14 @@ module.exports = function(jsondiffpatch, formattersHtml, curDiffData) {
       }
       return (diffView = diffView.filter(item => item.content));
     }
+
     if (current.path != old.path) {
       diffView.push({
         title: 'Api 路径',
         content: diffText(old.path, current.path)
       });
     }
+
     if (current.title != old.title) {
       diffView.push({
         title: 'Api 名称',

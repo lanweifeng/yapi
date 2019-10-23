@@ -641,6 +641,7 @@ class interfaceController extends baseController {
 
     handleHeaders(params)
 
+    // 获取旧数据
     let interfaceData = await this.Model.get(id);
     if (!interfaceData) {
       return (ctx.body = yapi.commons.resReturn(null, 400, '不存在的接口'));
@@ -652,12 +653,14 @@ class interfaceController extends baseController {
       }
     }
 
+    // 记录更新时间
     let data = Object.assign(
       {
         up_time: yapi.commons.time()
       },
       params
     );
+
 
     if (params.path) {
       let http_path;
@@ -682,6 +685,7 @@ class interfaceController extends baseController {
       data.query_path = params.query_path;
     }
 
+    // 如果修改了地址或者方法
     if (
       params.path &&
       (params.path !== interfaceData.path || params.method !== interfaceData.method)
@@ -709,17 +713,26 @@ class interfaceController extends baseController {
       }
     }
 
+    // 更新接口数据
     let result = await this.Model.up(id, data);
     let username = this.getUsername();
+    // 更新后的接口数据
     let CurrentInterfaceData = await this.Model.get(id);
+    // 需要记录的数据
     let logData = {
+      // 接口ID
       interface_id: id,
+      // 分类ID
       cat_id: data.catid,
+      // 当前接口数据转成object
       current: CurrentInterfaceData.toObject(),
+      // 旧接口数据转成object
       old: interfaceData.toObject()
     };
 
+    // 获得旧接口数据的接口分类
     this.catModel.get(interfaceData.catid).then(cate => {
+      // 比较不同
       let diffView2 = showDiffMsg(jsondiffpatch, formattersHtml, logData);
       if (diffView2.length <= 0) {
           return; // 没有变化时，不写日志
@@ -782,7 +795,7 @@ class interfaceController extends baseController {
       });
     }
 
-    yapi.emitHook('interface_update', id).then();
+    yapi.emitHook('interface_update', id, logData).then();
     ctx.body = yapi.commons.resReturn(result);
     return 1;
   }
