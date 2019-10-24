@@ -842,7 +842,7 @@ class interfaceController extends baseController {
       }
 
       // let inter = await this.Model.get(id);
-      let result = await this.Model.del(id);
+      let result = await this.Model.del(id, data);
       yapi.emitHook('interface_del', id).then();
       await this.caseModel.delByInterfaceId(id);
       let username = this.getUsername();
