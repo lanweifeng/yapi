@@ -795,7 +795,7 @@ class interfaceController extends baseController {
       });
     }
 
-    yapi.emitHook('interface_update', id, logData).then();
+    yapi.emitHook('interface_update', logData).then();
     ctx.body = yapi.commons.resReturn(result);
     return 1;
   }
