@@ -257,7 +257,8 @@ async function crossRequest(defaultOptions, preScript, afterScript, commonContex
       return urlObj.href;
     },
     set href(val) {
-      throw new Error('context.href 不能被赋值');
+      urlObj.href = val;
+      // throw new Error('context.href 不能被赋值');
     },
     get hostname() {
       return urlObj.hostname;
