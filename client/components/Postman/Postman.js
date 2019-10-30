@@ -300,11 +300,13 @@ export default class Run extends Component {
       loading: true
     });
 
+    console.log('this.state', this.state);
     let options = handleParams(this.state, this.handleValue),
       result;
 
     try {
       options.taskId = this.props.curUid;
+      console.log('options', options);
       result = await crossRequest(options, this.state.pre_script, this.state.after_script, createContext(
         this.props.curUid,
         this.props.projectId,
