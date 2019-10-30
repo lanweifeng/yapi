@@ -356,7 +356,6 @@ async function crossRequest(defaultOptions, preScript, afterScript, commonContex
 }
 
 function handleParams(interfaceData, handleValue, requestParams) {
-  console.log('interfaceData', interfaceData);
   let interfaceRunData = Object.assign({}, interfaceData);
   function paramsToObjectWithEnable(arr) {
     const obj = {};
