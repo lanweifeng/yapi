@@ -182,6 +182,7 @@ function sandboxByNode(sandbox = {}, script) {
   script.runInContext(context, {
     timeout: 10000
   });
+  console.log('sandbox', sandbox);
   return sandbox;
 }
 
