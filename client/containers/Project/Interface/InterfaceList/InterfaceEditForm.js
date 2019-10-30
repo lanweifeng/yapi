@@ -234,6 +234,7 @@ class InterfaceEditForm extends Component {
           }
         }, 3000);
         if (!err) {
+          console.log('state',this.state);
           values.desc = this.editor.getHtml();
           values.markdown = this.editor.getMarkdown();
           if (values.res_body_type === 'json') {
