@@ -839,11 +839,11 @@ class InterfaceEditForm extends Component {
               {getFieldDecorator('gqlOpera', {
                 initialValue: this.state.gqlOpera
               })(
-                  <Select id="gqlOpera" placeholder="graphql请求类型(如果不是graphql接口请忽略)">
-                    <Option value="query">query</Option>
-                    <Option value="mutation">mutation</Option>
-                  </Select>
-                  )}
+                <Select id="gqlOpera" placeholder="graphql请求类型(如果不是graphql接口请忽略)">
+                  <Option value="query">query</Option>
+                  <Option value="mutation">mutation</Option>
+                </Select>
+                )}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="选择分类">
