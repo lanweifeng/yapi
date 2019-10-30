@@ -341,6 +341,7 @@ class InterfaceEditForm extends Component {
               return message.error('返回数据 json-schema 格式有误');
             }
           }
+          console.log('请求参数',values);
           this.props.onSubmit(values);
           EditFormContext.props.changeEditStatus(false);
         }
