@@ -307,7 +307,7 @@ export default class Run extends Component {
       options.taskId = this.props.curUid;
       result = await crossRequest(options, this.state.pre_script, this.state.after_script, {
         ...createContext(this.props.curUid, this.props.projectId, this.props.interfaceId),
-        interfaceData: {...this.state}
+        interfaceData: {...this.props.data}
       });
       result = {
         header: result.res.header,
