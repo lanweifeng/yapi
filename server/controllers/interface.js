@@ -82,6 +82,7 @@ class interfaceController extends baseController {
       desc: 'string',
       status: 'string',
       beHead: 'string',
+      gqlOpera: 'string',
       req_query: [
         {
           name: 'string',

@@ -835,6 +835,17 @@ class InterfaceEditForm extends Component {
               })(<Input id="beHead" placeholder="该接口后端负责人" />)}
             </FormItem>
 
+            <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
+              {getFieldDecorator('gqlOpera', {
+                initialValue: this.state.gqlOpera
+              })(
+                  <Select id="gqlOpera" placeholder="graphql请求类型(如果不是graphql接口请忽略)">
+                    <Option value="query">query</Option>
+                    <Option value="mutation">mutation</Option>
+                  </Select>
+                  )}
+            </FormItem>
+
             <FormItem className="interface-edit-item" {...formItemLayout} label="选择分类">
               {getFieldDecorator('catid', {
                 initialValue: this.state.catid + '',
