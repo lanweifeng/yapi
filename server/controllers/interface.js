@@ -279,9 +279,10 @@ class interfaceController extends baseController {
     }
 
     let result = await this.Model.save(data);
+    let resultTemp = JSON.parse(JSON.stringify(result));
     // 当前登录用户
-    result.curUserName = this.getUsername();
-    yapi.emitHook('interface_add', result).then();
+    resultTemp.curUserName = this.getUsername();
+    yapi.emitHook('interface_add', resultTemp).then();
     this.catModel.get(params.catid).then(cate => {
       let username = this.getUsername();
       let title = `<a href="/user/profile/${this.getUid()}">${username}</a> 为分类 <a href="/project/${
@@ -838,9 +839,9 @@ class interfaceController extends baseController {
       }
 
       let data = await this.Model.get(id);
+      let dataTemp = JSON.parse(JSON.stringify(data));
       // 当前登录用户
-      data.curUserName = this.getUsername();
-
+      dataTemp.curUserName = this.getUsername();
       if (data.uid != this.getUid()) {
         let auth = await this.checkAuth(data.project_id, 'project', 'danger');
         if (!auth) {
@@ -850,7 +851,7 @@ class interfaceController extends baseController {
 
       // let inter = await this.Model.get(id);
       let result = await this.Model.del(id);
-      yapi.emitHook('interface_del', data).then();
+      yapi.emitHook('interface_del', dataTemp).then();
       await this.caseModel.delByInterfaceId(id);
       let username = this.getUsername();
       this.catModel.get(data.catid).then(cate => {
