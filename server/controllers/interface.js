@@ -171,7 +171,7 @@ class interfaceController extends baseController {
   }
 
   /**
-   * 添加项目分组
+   * 添加接口
    * @interface /interface/add
    * @method POST
    * @category interface
@@ -279,6 +279,8 @@ class interfaceController extends baseController {
     }
 
     let result = await this.Model.save(data);
+    // 当前登录用户
+    result.curUserName = this.getUsername();
     yapi.emitHook('interface_add', result).then();
     this.catModel.get(params.catid).then(cate => {
       let username = this.getUsername();
@@ -728,7 +730,9 @@ class interfaceController extends baseController {
       // 当前接口数据转成object
       current: CurrentInterfaceData.toObject(),
       // 旧接口数据转成object
-      old: interfaceData.toObject()
+      old: interfaceData.toObject(),
+      // 当前登录用户
+      curUserName: this.getUsername(),
     };
 
     // 获得旧接口数据的接口分类
@@ -834,6 +838,8 @@ class interfaceController extends baseController {
       }
 
       let data = await this.Model.get(id);
+      // 当前登录用户
+      data.curUserName = this.getUsername();
 
       if (data.uid != this.getUid()) {
         let auth = await this.checkAuth(data.project_id, 'project', 'danger');
