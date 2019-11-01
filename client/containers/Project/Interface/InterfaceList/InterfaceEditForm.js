@@ -831,8 +831,8 @@ class InterfaceEditForm extends Component {
               {getFieldDecorator('beHead', {
                 initialValue: this.state.beHead,
                 rules: [{
-                  required: true, message: '请输入接口维护人!',
-                }],
+                  required: true, message: '请输入接口维护人!'
+                }]
               })(<Input id="beHead" placeholder="接口维护人" />)}
             </FormItem>
 
@@ -840,8 +840,8 @@ class InterfaceEditForm extends Component {
               {getFieldDecorator('interfaceUser', {
                 initialValue: this.state.interfaceUser,
                 rules: [{
-                  required: true, message: '请输入接口联调人!',
-                }],
+                  required: true, message: '请输入接口联调人!'
+                }]
               })(<Input id="beHead" placeholder="接口联调人" />)}
             </FormItem>
 
