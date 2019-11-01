@@ -10,6 +10,7 @@ class interfaceModel extends baseModel {
     return {
       title: { type: String, required: true },
       beHead: String,
+      interfaceUser: String,
       gqlOpera: String,
       uid: { type: Number, required: true },
       path: { type: String, required: true },

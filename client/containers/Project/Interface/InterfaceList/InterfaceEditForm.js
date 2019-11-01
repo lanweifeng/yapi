@@ -829,8 +829,20 @@ class InterfaceEditForm extends Component {
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="该接口后端负责人">
               {getFieldDecorator('beHead', {
-                initialValue: this.state.beHead
-              })(<Input id="beHead" placeholder="该接口后端负责人" />)}
+                initialValue: this.state.beHead,
+                rules: [{
+                  required: true, message: '请输入接口维护人!',
+                }],
+              })(<Input id="beHead" placeholder="接口维护人" />)}
+            </FormItem>
+
+            <FormItem className="interface-edit-item" {...formItemLayout} label="该接口后端负责人">
+              {getFieldDecorator('interfaceUser', {
+                initialValue: this.state.interfaceUser,
+                rules: [{
+                  required: true, message: '请输入接口联调人!',
+                }],
+              })(<Input id="beHead" placeholder="接口联调人" />)}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
