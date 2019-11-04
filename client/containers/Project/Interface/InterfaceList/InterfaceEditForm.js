@@ -591,6 +591,11 @@ class InterfaceEditForm extends Component {
     });
   };
 
+  //接口联调人更新
+  handleUpdateInterfaceUser = value => {
+    console.log(value);
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { custom_field, projectMsg } = this.props;
@@ -843,7 +848,7 @@ class InterfaceEditForm extends Component {
                 rules: [{
                   required: true, message: '请输入接口联调人!'
                 }]
-              })(<UsernameAutoComplete />)}
+              })(<UsernameAutoComplete callbackState={this.handleUpdateInterfaceUser} />)}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
