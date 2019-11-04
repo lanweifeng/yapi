@@ -10,14 +10,8 @@ class interfaceModel extends baseModel {
     return {
       title: { type: String, required: true },
       beHead: {
-        add_time: Number,
-        email: String,
-        role: String,
-        study: Boolean,
-        type: String,
-        up_time: Number,
         username: String,
-        _id: Number
+        id: Number
       },
       interfaceUser: Array,
       isGql: String,

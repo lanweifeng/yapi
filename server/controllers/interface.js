@@ -82,14 +82,8 @@ class interfaceController extends baseController {
       desc: 'string',
       status: 'string',
       beHead: {
-        add_time: 'number',
-        email: 'string',
-        role: 'string',
-        study: 'boolean',
-        type: 'strng',
-        up_time: 'number',
         username: 'string',
-        _id: 'number'
+        id: 'number'
       },
       interfaceUser: 'array',
       gqlOpera: 'string',
