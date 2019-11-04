@@ -380,7 +380,6 @@ class InterfaceEditForm extends Component {
     EditFormContext = this;
     this._isMounted = true;
     axios.get('/api/user/list?limit=100', ).then(data => {
-      console.log(data);
       const userList = [];
       data = data.data.data.list;
 
