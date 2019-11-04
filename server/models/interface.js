@@ -9,8 +9,18 @@ class interfaceModel extends baseModel {
   getSchema() {
     return {
       title: { type: String, required: true },
-      beHead: String,
+      beHead: {
+        add_time: Number,
+        email: String,
+        role: String,
+        study: Boolean,
+        type: String,
+        up_time: Number,
+        username: String,
+        _id: Number
+      },
       interfaceUser: Array,
+      isGql: String,
       gqlOpera: String,
       uid: { type: Number, required: true },
       path: { type: String, required: true },

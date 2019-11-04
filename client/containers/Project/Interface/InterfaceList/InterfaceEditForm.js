@@ -342,6 +342,12 @@ class InterfaceEditForm extends Component {
               return message.error('返回数据 json-schema 格式有误');
             }
           }
+          if (values.beHead) {
+            values.beHead = this.state.userList.find(user => user.id === values.beHead);
+          }
+          /*if (values.interfaceUser){
+            values.interfaceUser = values.interfaceUser.forEach(interfaceUser => this.state.userList.find(user => user._id === interfaceUser));
+          }*/
           this.props.onSubmit(values);
           EditFormContext.props.changeEditStatus(false);
         }
@@ -374,6 +380,7 @@ class InterfaceEditForm extends Component {
     EditFormContext = this;
     this._isMounted = true;
     axios.get('/api/user/list?limit=100', ).then(data => {
+      console.log(data);
       const userList = [];
       data = data.data.data.list;
 
@@ -623,7 +630,7 @@ class InterfaceEditForm extends Component {
     };
 
     const userListOptions = this.state.userList.map((item, index) => (
-      <Option key={index} value={'' + item.id}>
+      <Option key={index} value={item.id}>
         {item.username}
       </Option>
     ));
@@ -858,23 +865,37 @@ class InterfaceEditForm extends Component {
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="接口后端负责人">
               {getFieldDecorator('beHead', {
-                initialValue: this.state.beHead,
+                initialValue: this.state.beHead ? this.state.beHead._id : null,
                 rules: [{
-                  required: true, message: '请输入接口维护人!'
+                  required: true, message: '请选择接口维护人!'
                 }]
-              })(<Input id="beHead" placeholder="接口维护人" />)}
+              })(<Select
+                  style={{ width: '100%' }}
+                  placeholder="请选择接口维护人"
+                  filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  showSearch
+
+                  //filterOption={false}
+                  //notFoundContent={fetching ? <span style={{ color: 'red' }}> 当前用户不存在</span> : null}
+                  //onSearch={this.handleSearch}
+                  //onChange={this.handleChange}
+              >
+                {userListOptions}
+              </Select>)}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="接口联调人">
               {getFieldDecorator('interfaceUser', {
-                //initialValue: ['14','15'],
+                initialValue: this.state.interfaceUser.length > 0 ? this.state.interfaceUser.map(user => user._id) : [],
                 rules: [{
-                  required: true, message: '请输入接口联调人!'
+                  required: true, message: '请选择接口联调人!'
                 }]
               })(<Select
                   mode="multiple"
                   style={{ width: '100%' }}
-                  placeholder="请输入接口联调人"
+                  placeholder="请选择接口联调人"
                   filterOption={(input, option) =>
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                   }
@@ -886,10 +907,25 @@ class InterfaceEditForm extends Component {
                 {userListOptions}
               </Select>)}
             </FormItem>
-
+            <FormItem className="interface-edit-item" {...formItemLayout} label="是否graphql">
+              {getFieldDecorator('isGql', {
+                initialValue: this.state.isGql || '1',
+                rules: [{
+                  required: true, message: '请选择是否graphql!'
+                }]
+              })(
+                <Radio.Group>
+                  <Radio value={'1'}>是</Radio>
+                  <Radio value={'0'}>否</Radio>
+                </Radio.Group>
+                )}
+            </FormItem>
             <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
               {getFieldDecorator('gqlOpera', {
-                initialValue: this.state.gqlOpera
+                initialValue: this.state.gqlOpera,
+                rules: [{
+                  required: this.props.form.getFieldValue('isGql') === '1', message: '请选择graphql请求类型!'
+                }]
               })(
                 <Select id="gqlOpera" placeholder="graphql请求类型(如果不是graphql接口请忽略)">
                   <Option value="query">query</Option>
@@ -897,7 +933,6 @@ class InterfaceEditForm extends Component {
                 </Select>
                 )}
             </FormItem>
-
             <FormItem className="interface-edit-item" {...formItemLayout} label="选择分类">
               {getFieldDecorator('catid', {
                 initialValue: this.state.catid + '',
