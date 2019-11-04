@@ -13,7 +13,6 @@ import AceEditor from 'client/components/AceEditor/AceEditor';
 import axios from 'axios';
 import { MOCK_SOURCE } from '../../../../constants/variable.js';
 import Editor from 'common/tui-editor/dist/tui-editor-Editor-all.min.js';
-import UsernameAutoComplete from 'client/components/UsernameAutoComplete/UsernameAutoComplete.js';
 const jSchema = require('json-schema-editor-visual');
 const ResBodySchema = jSchema({ lang: 'zh_CN', mock: MOCK_SOURCE });
 const ReqBodySchema = jSchema({ lang: 'zh_CN', mock: MOCK_SOURCE });
@@ -161,6 +160,7 @@ class InterfaceEditForm extends Component {
         headers: 'hide'
       }
     };
+    curdata.userList = [];
     curdata['hideTabs']['req'][HTTP_METHOD[curdata.method].default_tab] = '';
     return Object.assign(
       {
@@ -373,6 +373,23 @@ class InterfaceEditForm extends Component {
   componentDidMount() {
     EditFormContext = this;
     this._isMounted = true;
+    axios.get('/api/user/list?limit=100', ).then(data => {
+      const userList = [];
+      data = data.data.data.list;
+
+      if (data) {
+        data.forEach(v =>
+            userList.push({
+              username: v.username,
+              id: v._id
+            })
+        );
+        // 取回用户列表后，设置 userList
+        this.setState({
+          userList
+        });
+      }
+    });
     this.setState({
       req_radio_type: HTTP_METHOD[this.state.method].request_body ? 'req-body' : 'req-query'
     });
@@ -605,6 +622,12 @@ class InterfaceEditForm extends Component {
       wrapperCol: { span: 18 }
     };
 
+    const userListOptions = this.state.userList.map((item, index) => (
+      <Option key={index} value={'' + item.id}>
+        {item.username}
+      </Option>
+    ));
+
     const res_body_use_schema_editor = checkIsJsonSchema(this.state.res_body) || '';
 
     const req_body_other_use_schema_editor = checkIsJsonSchema(this.state.req_body_other) || '';
@@ -833,7 +856,7 @@ class InterfaceEditForm extends Component {
               })(<Input id="title" placeholder="接口名称" />)}
             </FormItem>
 
-            <FormItem className="interface-edit-item" {...formItemLayout} label="该接口后端负责人">
+            <FormItem className="interface-edit-item" {...formItemLayout} label="接口后端负责人">
               {getFieldDecorator('beHead', {
                 initialValue: this.state.beHead,
                 rules: [{
@@ -842,13 +865,26 @@ class InterfaceEditForm extends Component {
               })(<Input id="beHead" placeholder="接口维护人" />)}
             </FormItem>
 
-            <FormItem className="interface-edit-item" {...formItemLayout} label="该接口后端负责人">
+            <FormItem className="interface-edit-item" {...formItemLayout} label="接口联调人">
               {getFieldDecorator('interfaceUser', {
-                initialValue: this.state.interfaceUser,
+                //initialValue: ['14','15'],
                 rules: [{
                   required: true, message: '请输入接口联调人!'
                 }]
-              })(<UsernameAutoComplete callbackState={this.handleUpdateInterfaceUser} />)}
+              })(<Select
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder="请输入接口联调人"
+                  filterOption={(input, option) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  //filterOption={false}
+                  //notFoundContent={fetching ? <span style={{ color: 'red' }}> 当前用户不存在</span> : null}
+                  //onSearch={this.handleSearch}
+                  //onChange={this.handleChange}
+              >
+                {userListOptions}
+              </Select>)}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
