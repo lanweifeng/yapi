@@ -345,9 +345,9 @@ class InterfaceEditForm extends Component {
           if (values.beHead) {
             values.beHead = this.state.userList.find(user => user.id === values.beHead);
           }
-          /*if (values.interfaceUser){
-            values.interfaceUser = values.interfaceUser.forEach(interfaceUser => this.state.userList.find(user => user._id === interfaceUser));
-          }*/
+          if (values.interfaceUser.length > 0){
+            values.interfaceUser = values.interfaceUser.map(interfaceUser => this.state.userList.find(user => user.id === interfaceUser));
+          }
           this.props.onSubmit(values);
           EditFormContext.props.changeEditStatus(false);
         }
@@ -865,7 +865,7 @@ class InterfaceEditForm extends Component {
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="接口后端负责人">
               {getFieldDecorator('beHead', {
-                initialValue: this.state.beHead ? this.state.beHead._id : null,
+                initialValue: this.state.beHead ? this.state.beHead.id : null,
                 rules: [{
                   required: true, message: '请选择接口维护人!'
                 }]
@@ -888,7 +888,7 @@ class InterfaceEditForm extends Component {
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="接口联调人">
               {getFieldDecorator('interfaceUser', {
-                initialValue: this.state.interfaceUser.length > 0 ? this.state.interfaceUser.map(user => user._id) : [],
+                initialValue: this.state.interfaceUser.length > 0 ? this.state.interfaceUser.map(user => user.id) : [],
                 rules: [{
                   required: true, message: '请选择接口联调人!'
                 }]
