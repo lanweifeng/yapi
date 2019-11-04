@@ -13,6 +13,7 @@ import AceEditor from 'client/components/AceEditor/AceEditor';
 import axios from 'axios';
 import { MOCK_SOURCE } from '../../../../constants/variable.js';
 import Editor from 'common/tui-editor/dist/tui-editor-Editor-all.min.js';
+import UsernameAutoComplete from 'client/components/UsernameAutoComplete/UsernameAutoComplete.js';
 const jSchema = require('json-schema-editor-visual');
 const ResBodySchema = jSchema({ lang: 'zh_CN', mock: MOCK_SOURCE });
 const ReqBodySchema = jSchema({ lang: 'zh_CN', mock: MOCK_SOURCE });
@@ -842,7 +843,7 @@ class InterfaceEditForm extends Component {
                 rules: [{
                   required: true, message: '请输入接口联调人!'
                 }]
-              })(<Input id="beHead" placeholder="接口联调人" />)}
+              })(<UsernameAutoComplete />)}
             </FormItem>
 
             <FormItem className="interface-edit-item" {...formItemLayout} label="graphql请求类型">
