@@ -19,6 +19,18 @@ import { timeago } from '../../../common/utils.js';
 // const Option = AutoComplete.Option;
 const { Option, OptGroup } = AutoComplete;
 
+function getQueryVariable()
+{
+  let query = window.location.search.substring(1);
+  let vars = query.split("&");
+  const result = {};
+  for (let i=0;i<vars.length;i++) {
+    let pair = vars[i].split("=");
+    result[pair[0]] = pair[1];
+  }
+  return result;
+}
+
 const AddDiffView = props => {
   const { title, content, className } = props;
 
@@ -111,7 +123,15 @@ class TimeTree extends Component {
   };
 
   componentWillMount() {
-    this.props.fetchNewsData(this.props.typeid, this.props.type, 1, 10);
+    const preParam = getQueryVariable();
+    if(Object.keys(preParam).length > 0 && preParam.selectValue){
+      this.curSelectValue = preParam.selectValue;
+      this.props.fetchNewsData(this.props.typeid, this.props.type, 1, 10, preParam.selectValue);
+      this.setState({curSelectValue: preParam.selectValue})
+      // this.props.fetchNewsData(preParam.typeid, preParam.type, 1, 10, preParam.selectValue);
+    }else {
+      this.props.fetchNewsData(this.props.typeid, this.props.type, 1, 10);
+    }
     if (this.props.type === 'project') {
       this.getApiList();
     }
@@ -136,6 +156,7 @@ class TimeTree extends Component {
 
   handleSelectApi = selectValue => {
     this.curSelectValue = selectValue;
+    this.setState({curSelectValue: selectValue})
     this.props.fetchNewsData(this.props.typeid, this.props.type, 1, 10, selectValue);
   };
 
@@ -246,6 +267,7 @@ class TimeTree extends Component {
             <Col span="3">选择查询的 Api：</Col>
             <Col span="10">
               <AutoComplete
+                value={this.state.curSelectValue}
                 onSelect={this.handleSelectApi}
                 style={{ width: '100%' }}
                 placeholder="Select Api"

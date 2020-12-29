@@ -15,6 +15,7 @@ const showDiffMsg = require('../../common/diff-view.js');
 const mergeJsonSchema = require('../../common/mergeJsonSchema');
 const fs = require('fs-extra');
 const path = require('path');
+const moment = require('moment');
 
 // const annotatedCss = require("jsondiffpatch/public/formatters-styles/annotated.css");
 // const htmlCss = require("jsondiffpatch/public/formatters-styles/html.css");
@@ -285,8 +286,13 @@ class interfaceController extends baseController {
 
     let result = await this.Model.save(data);
     let resultTemp = JSON.parse(JSON.stringify(result));
+
     // 当前登录用户
     resultTemp.curUserName = this.getUsername();
+    resultTemp.project_id = result.project_id;
+    resultTemp.cat_id = result.catid;
+    resultTemp.createTime = moment.unix(result.add_time).format('YYYY-MM-DD HH:mm:ss')
+
     yapi.emitHook('interface_add', resultTemp).then();
     this.catModel.get(params.catid).then(cate => {
       let username = this.getUsername();
@@ -727,18 +733,26 @@ class interfaceController extends baseController {
     let username = this.getUsername();
     // 更新后的接口数据
     let CurrentInterfaceData = await this.Model.get(id);
+
+
     // 需要记录的数据
     let logData = {
       // 接口ID
       interface_id: id,
       // 分类ID
       cat_id: data.catid,
+      // 更新时间
+      updateTime: moment.unix(CurrentInterfaceData.up_time).format('YYYY-MM-DD HH:mm:ss'),
+      // 项目ID
+      project_id: CurrentInterfaceData.project_id,
       // 当前接口数据转成object
       current: CurrentInterfaceData.toObject(),
       // 旧接口数据转成object
       old: interfaceData.toObject(),
       // 当前登录用户
       curUserName: this.getUsername(),
+      // 查看链接
+      updateDetailLink: `http://192.168.214.111:40000/project/${CurrentInterfaceData.project_id}/activity?typeid=${CurrentInterfaceData.project_id}&type=project&selectValue=${id}`
     };
 
     // 获得旧接口数据的接口分类
@@ -845,8 +859,11 @@ class interfaceController extends baseController {
 
       let data = await this.Model.get(id);
       let dataTemp = JSON.parse(JSON.stringify(data));
+
       // 当前登录用户
       dataTemp.curUserName = this.getUsername();
+      dataTemp.cat_id = data.catid;
+
       if (data.uid != this.getUid()) {
         let auth = await this.checkAuth(data.project_id, 'project', 'danger');
         if (!auth) {
